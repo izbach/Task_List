@@ -20,7 +20,7 @@ var express = require("express"),
 // CONFIGURATION
 //=============================================================
 
-mongoose.connect("mongodb://localhost:27017/YMCAstats", {useCreateIndex:true, useNewUrlParser: true, useUnifiedTopology:true})
+mongoose.connect("mongodb://localhost:27017/YMCAstats", {useCreateIndex:true, useNewUrlParser: true, useUnifiedTopology:false})
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
@@ -62,9 +62,14 @@ app.get("/tester", (req, res) =>{
     
 })
 app.get('/tasks', db.getTasks)
+app.get('/walkthroughs/done', db.getWalkThroughsDone)
+app.get('/headcounts/done', db.getHeadcountsDone)
 app.get('/operating-hours', db.getOpeningClosingTimes)
 app.post('/watertests', db.createWaterTest)
+app.post('/headcounts', db.createHeadCount)
+app.post('/walkthroughs', db.createWalkthroughEntry)
 app.post('/tasks', db.createTask)
+
 app.get('/employees', db.getEmployees)
 app.get('/tasks/done', (req, res) => {
     pool.query('SELECT * FROM tasks', (err, results) => {

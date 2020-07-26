@@ -88,61 +88,53 @@
 			</div>
 			<div class="container">
 				<div class="panel panel-default">
-					<div class="panel-heading"><h3>Headcounts for <span class="time"></span></h3></div>
+					<div class="panel-heading" id="headcountHeader"><h3>Headcounts for <span class="time"></span></h3></div>
 					<table class="table table-bordered">
 						<tr>
 							<th>Pool</th>
 							<th># of people</th>
 						</tr>
-						<tr>
-							<td>Main pool open/lane swim</td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Main pool Programs</td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Training pool open swim</td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Training pool programs</td>
-							<td><input type="number"></td>
-						</tr>
+						<% var i = 0 %>
+						<% pools.forEach(pool => { %>
+							
+							<% if(pool.count_programs && pool.do_headcount){ %>
+								<tr>
+									<td id="<%= i %>Name"><%= pool.name %> Open/Lane Swim</td>
+									<td><input class="headcountInputs" id="<%= i %>Count" type="number"></td>
+								</tr>
+								<% i += 1 %>
+								<tr>
+									<td id="<%= i %>Name"><%= pool.name %> Programs</td>
+									<td><input class="headcountInputs" id="<%= i %>Count" type="number"></td>
+								</tr>
+						<% } else if(pool.do_headcount) { %>
+							<tr>
+								<td id="<%= i %>Name"><%= pool.name %></td>
+								<td><input class="headcountInputs" id="<%= i %>Count" type="number"></td>
+							</tr>
+						<% } i += 1;}) %>
 					</table>
 					<div class="panel-footer">
-						<h5>Employee number: <input type="number" name="" id=""><button style="float: right;" class="btn btn-success">Submit</button></h5>
+						<h5>Employee number: <input type="number" name="" id="employee_id"><button style="float: right;" class="btn btn-success" id="headcountSubmit">Submit</button></h5>
 					</div>
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading"><h3>Walkthroughs and Steamroom checks for <span class="hourly"></span></h3></div>
 					<table class="table table-bordered">
+						
 						<tr>
 							<th>Changroom</th>
 							<th>Steamroom</th>
 							<th>Employee #</th>
 						</tr>
-						<tr>
-							<td>Mens general</td>
-							<td><input type="number" placeholder="temp"></td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Mens plus</td>
-							<td><input type="number" placeholder="temp"></td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Womens general</td>
-							<td><input type="number" placeholder="temp"></td>
-							<td><input type="number"></td>
-						</tr>
-						<tr>
-							<td>Womens plus</td>
-							<td><input type="number" placeholder="temp"></td>
-							<td><input type="number"></td>
-						</tr>
+						<% changerooms.forEach(changeroom =>{ %>
+							<tr>
+								<td><%= changeroom.changeroom_name %></td>
+								<% if(changeroom.steamroom){ %> <td><input class="steamrooms" id="<%= (changeroom.changeroom_name).replace(/\s+/g, '') %>steamroom" type="number" placeholder="temp"></td>
+								<% }else{ %> <td><input type="number" class="steamrooms" disabled="disabled" placeholder="temp"></td> <% } %>
+								<td><input class="CRemplnumbr" id="<%= (changeroom.changeroom_name).replace(/\s+/g, '') %>" type="number"></td>
+							</tr>
+						<% }) %>
 					</table>
 		
 				</div>
@@ -191,7 +183,7 @@
 						</td>
 						<!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
 						<!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
-						<td><input class="emplnumwatertest" id="employeeInput<%= pool_name %>" disabled="disabled" type="number"></td>
+						<td><input class="emplnumwatertest" id="employeeInput<%= pool_name %>" type="number"></td>
 					</tr>
 				<% }) %>
 			</table>

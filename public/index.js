@@ -31,6 +31,14 @@ function twentyFourToTwelve(timeInTwentyFour){
     if(hours > 12){
         hours = hours - 12
         return hours + timeInTwentyFour.slice(-3) + " PM"
+    } else if(hours == -1){ // DELETE THIS WHEN YOU UPDATE THE OPENING AND CLOSING TIMES
+        hours = 11
+        return hours + timeInTwentyFour.slice(-3) + " PM"
+    } else if(hours == 0){ // DELETE THIS WHEN YOU UPDATE THE OPENING AND CLOSING TIMES
+        hours = 12
+        return hours + timeInTwentyFour.slice(-3) + " AM"
+    } else if(hours == 12){
+        return hours + timeInTwentyFour.slice(-3) + " PM"
     } else {
         return timeInTwentyFour + " AM"
     }
@@ -106,8 +114,13 @@ function waterTestDisplay(time, waterTestTimes){
 
 
 //=================================================================
-// ONLY RUNS ON HOME.EJS
+// ONLY RUNS ON TASKSHEET.EJS
 //=================================================================
+
+//=======================
+// Setup
+//=======================
+
 if(document.querySelector(".time") != null){
     var openingTime
     var closingTime
@@ -156,6 +169,7 @@ if(document.querySelector(".time") != null){
             timesThatChange += 180;
             
         }
+        console.log(timesArray)
         return(timesArray)
     }
     
@@ -175,94 +189,20 @@ if(document.querySelector(".time") != null){
         });
         waterTestDisplay(now, waterTestTimes)
         $("#waterTestTime").text()
-        $(".time").text(quarterHour(now));
-        $(".hourly").text(twentyFourToTwelve(now.getHours() + ":00"))
-
+        openingTimeToMinutes = Number(String(openingTime).slice(0,2)) * 60 + Number(String(openingTime).slice(3,5))
+        closingTimeToMinutes = Number(String(closingTime).slice(0,2)) * 60 + Number(String(closingTime).slice(3,5))
+        nowInMinutes = now.getHours() * 60 + now.getMinutes()
+        if(nowInMinutes >= openingTimeToMinutes && nowInMinutes < closingTimeToMinutes){
+            if($(".hourly").text() !== twentyFourToTwelve(now.getHours() + ":00")){
+                $(".hourly").text(twentyFourToTwelve(now.getHours() + ":00"))
+                refreshData()
+            }
+            if($(".time").text() !== quarterHour(now)){
+                $(".time").text(quarterHour(now));
+                refreshData()
+            }
+        }
     }
-    (function() {
-        $('.waterTestRows input[type="number"').keyup(function() {
-            var empty = false
-            var poolname = $(this).attr("class").slice(0,-10)
-            var poolclass = $(this).attr("class")
-            $("." + poolclass).each(function() {
-                if ($(this).val() == '') {
-                    console.log(this.id + " is Empty")
-                    empty = true;
-                }
-            });
-    
-    
-            if (empty) {
-                $('#employeeInput' + poolname).removeClass("inputsFilled") // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
-            } else {
-                $('#employeeInput' + poolname).addClass("inputsFilled"); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
-            }
-            if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
-                $('#employeeInput' + poolname).removeAttr("disabled")
-            } else {
-                $('#employeeInput' + poolname).attr("disabled", "disabled")
-            }
-        });
-        $('.waterTestRows input[type="checkbox"]').click(function() {
-            var poolname = $(this).attr("class").slice(0,-10)
-            var poolclass = $(this).attr("class")
-                if(this.id == ("closure" + poolname)){
-                    if($(this).is(":checked") && $("#dmNotified" + poolname).prop("checked") == false){
-                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
-                        $('#employeeInput' + poolname).addClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                        // alert("clicked")
-                    } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == false) {
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                    } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == true) {
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                    } else {
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                        $('#employeeInput' + poolname).addClass("bothChecked")
-                    }
-                }
-                if(this.id == ("dmNotified" + poolname)){
-                    if($(this).is(":checked") && $("#closure" + poolname).prop("checked") == false){
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                    // alert("clicked")
-                    } else if($(this).prop("checked") == false && $("#closure" + poolname).is(":checked")){
-                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
-                        $('#employeeInput' + poolname).addClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                        
-                    } else if($(this).prop("checked") == true && $("#closure" + poolname).is(":checked")){
-                        $('#employeeInput' + poolname).addClass("bothChecked")
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                    } else{
-                        $("#dmSlider" + poolname).removeAttr("style")
-                        $('#employeeInput' + poolname).removeClass("disable")
-                        $('#employeeInput' + poolname).removeClass("bothChecked")
-                    }
-                }
-    
-            if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
-                $('#employeeInput' + poolname).removeAttr("disabled")
-            } else {
-                $('#employeeInput' + poolname).attr("disabled", "disabled")
-            }
-    
-            // if (empty) {
-            //     $('#employeeInput' + poolname).attr('disabled', 'disabled'); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
-            // } else {
-            //     $('#employeeInput' + poolname).removeAttr('disabled'); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
-            // }
-        });
-    })()
-    
-
     setInterval("updateDate();", 60000);
     function refreshData(){
         date = new Date()
@@ -283,14 +223,77 @@ if(document.querySelector(".time") != null){
                 })
             }
         })
+        $.ajax({
+            url: "/walkthroughs/done",
+            type: "GET",
+            datatype: 'json',
+            success: (data) => {
+                data.forEach(entry => {
+                    if($(".hourly").text() === twentyFourToTwelve((entry.time).slice(0,-3))){
+                        var changeroomInput = $("#" + entry.changeroom)
+                        var steamroom = $("#" + entry.changeroom + "steamroom")
+                        changeroomInput.val(entry.employee_id)
+                        $("#" + entry.changeroom + "steamroom").attr("disabled", true)
+                        steamroom.val(entry.steamroom)
+                        changeroomInput.attr("disabled", true)
+                        changeroomInput.addClass("good")
+                        changeroomInput.closest("tr").children().children().addClass("good")
+                        changeroomInput.closest("tr").addClass("good");
+                    } else {
+                        var changeroomInput = $("#" + entry.changeroom)
+                        var steamroom = $("#" + entry.changeroom + "steamroom")
+                        changeroomInput.val("")
+                        $("#" + entry.changeroom + "steamroom").removeAttr("disabled")
+                        steamroom.val("")
+                        changeroomInput.removeAttr("disabled")
+                        changeroomInput.removeClass("good")
+                        changeroomInput.closest("tr").children().children().removeClass("good")
+                        changeroomInput.closest("tr").removeClass("good");
+                    }
+                })
+                
+            }
+        })
+        $.ajax({
+            url: "/headcounts/done",
+            type: "GET",
+            datatype: 'json',
+            success: (data) => {
+                data.every((headcount, idx, arr) => {
+                    if($(".time").text() !== twentyFourToTwelve((headcount.time).slice(0,-3)) && idx !== arr.length - 1){
+                        // if(idx === arr.length - 1){
+                        //     alert('invalid id')
+                        // }
+                        return true
+                    } else if($(".time").text() === twentyFourToTwelve((headcount.time).slice(0,-3))){
+                        $(".headcountInputs").attr("disabled", true)
+                        $(".headcountInputs").closest("table").addClass("hidden");
+                        $("#headcountHeader").attr("style", "background-color: rgb(148, 243, 148)")
+
+                        $("#headcountSubmit").closest("div").addClass("hidden")
+                        return false
+                    } else {
+                        $(".headcountInputs").removeAttr("disabled")
+                        $(".headcountInputs").closest("table").removeClass("hidden");
+                        $("#headcountHeader").removeAttr("style")
+
+                        $("#headcountSubmit").closest("div").removeClass("hidden")
+                    }
+                })
+                
+            }
+        })
     }
     refreshData();
+//=======================
+// Tasks
+//=======================
     $('.emplnuminp').on('keyup', function(e) {
         var tasknum = this.id;
         var enterednum = $(this).val();
         var clicked = $(this);
         //alert(e.keyCode);
-        if(e.keyCode == 13) {
+        if(e.keyCode == 13 && enterednum !== "") {
             // if (clicked.hasClass("good") == true){
             //     return
             // }
@@ -326,6 +329,7 @@ if(document.querySelector(".time") != null){
                                     console.log(data)
                                     clicked.addClass("good");
                                     clicked.attr("disabled", true)
+                                    
                                     clicked.closest("tr").addClass("good");
                                 }
                                 
@@ -339,15 +343,232 @@ if(document.querySelector(".time") != null){
             })
         }
     });
-    $('.emplnumwatertest').on('keyup', function(e) {
+//============================
+// Head Counts and Walkthoughs
+//============================
+
+    $("#headcountSubmit").on("click", function(){
+        var enterednum = $("#employee_id").val()
+        var subButton = $(this)
+        if(enterednum !== ""){
+        $.ajax({
+            url: '/employees/',
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, status, errorThrown){
+                console.log(errorThrown)
+            },
+            success: (data) => {
+                data.every((employee, idx, arr) => {
+                    if(employee.employee_id != enterednum){
+                        if(idx === arr.length - 1){
+                            alert('invalid id')
+                        }
+                    return true
+                    } else {
+                        $('.headcountInputs').each(input => {
+                            data = {
+                                day: dayOfWeek,
+                                time: '' + $(".time").text(),
+                                headcount_pool: $("#" + input + "Name").text(),
+                                headcount: $("#" + input + "Count").val(),
+                                employee_id: enterednum
+                            }
+                            console.log(data)
+                            $.ajax({
+                                url: '/headcounts',
+                                type: 'POST',
+                                dataType:'text',
+                                data: data,
+                                error: function (xhr, status, errorThrown){
+                                    console.log(errorThrown)
+                                },
+                                success: function(data) {
+                                    console.log(data)
+                                    // $("#" + input + "Count").addClass("good");
+                                    $("#" + input + "Count").attr("disabled", true)
+                                    $("#" + input + "Count").closest("table").addClass("hidden");
+                                    $("#headcountHeader").attr("style", "background-color: rgb(148, 243, 148)")
+
+                                    subButton.closest("div").addClass("hidden")
+                                }
+                                
+                            });
+                        })
+                        
+                        return false;
+                    }
+                
+                })
+                
+            }
+        })
+        }
+    })
+    $(".steamrooms").keyup(function(){
+        if($(this).val() !== ""){
+            $(this).removeClass("unfilled")
+        } else {
+            $(this).addClass("unfilled")
+        }
+        
+    })
+    $('.CRemplnumbr').on('keyup', function(e) {
+        var changroomName = this.id;
         var enterednum = $(this).val();
+        var steamroom = $("#" + changroomName + "steamroom")
         var clicked = $(this);
-        var poolName = clicked.attr("id").slice(13)
-        //alert(e.keyCode);
-        if(e.keyCode == 13) {
+        // alert(e.keyCode);
+        if(e.keyCode == 13 && steamroom !== undefined && steamroom.val() === ""){
+            alert('You must input a steamroom temperature')
+            steamroom.addClass("unfilled")
+        } else if(e.keyCode == 13 && clicked.val() !== "" && (steamroom === undefined || steamroom.val() !== "")) {
             // if (clicked.hasClass("good") == true){
             //     return
             // }
+            
+            $.ajax({
+                url: '/employees/',
+                type: 'GET',
+                dataType: 'json',
+                error: function (xhr, status, errorThrown){
+                    console.log(errorThrown)
+                },
+                success: (data) => {
+                    data.every((employee, idx, arr) => {
+                        if(employee.employee_id != enterednum){
+                            if(idx === arr.length - 1){
+                                alert('invalid id')
+                            }
+                        return true
+                        } else {
+                            data = {
+                                day: dayOfWeek,
+                                time: '' + $(".hourly").text(),
+                                changeroom: changroomName,
+                                steamroom: steamroom.val(),
+                                employee_id: enterednum
+                            }
+                            $.ajax({
+                                url: '/walkthroughs',
+                                type: 'POST',
+                                dataType:'text',
+                                data: data,
+                                error: function (xhr, status, errorThrown){
+                                    console.log(errorThrown)
+                                },
+                                success: function(data) {
+                                    console.log(data)
+                                    clicked.addClass("good");
+                                    clicked.attr("disabled", true)
+                                    clicked.closest("tr").children().children().addClass("good")
+                                    clicked.closest("tr").addClass("good");
+                                }
+                                
+                            });
+                            return false;
+                        }
+                    
+                    })
+                    
+                }
+            })
+        }
+    });
+
+//=========================
+// Water Tests
+//=========================
+    (function() {
+        $('.waterTestRows input[type="number"]').keyup(function() {
+            if($(this).hasClass("emplnumwatertest")){
+                return;
+            }
+            var empty = false
+            var poolname = $(this).attr("class").slice(0,-10)
+            var poolclass = $(this).attr("class")
+            $("." + poolclass).each(function() {
+                if ($(this).val() == '') {
+                    console.log(this.id + " is Empty")
+                    empty = true;
+                }
+            });
+    
+    
+            if (empty) {
+                $('#employeeInput' + poolname).removeClass("inputsFilled")
+            } else {
+                $('#employeeInput' + poolname).addClass("inputsFilled");
+            }
+            // if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
+            //     $('#employeeInput' + poolname).removeAttr("disabled")
+            // } else {
+            //     $('#employeeInput' + poolname).attr("disabled", "disabled")
+            // }
+        });
+
+        $('.waterTestRows input[type="checkbox"]').click(function() {
+            var poolname = $(this).attr("class").slice(0,-10)
+            var poolclass = $(this).attr("class")
+                if(this.id == ("closure" + poolname)){
+                    if($(this).is(":checked") && $("#dmNotified" + poolname).prop("checked") == false){
+                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
+                        $('#employeeInput' + poolname).addClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == false) {
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == true) {
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    } else {
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).addClass("bothChecked")
+                    }
+                }
+                if(this.id == ("dmNotified" + poolname)){
+                    if($(this).is(":checked") && $("#closure" + poolname).prop("checked") == false){
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    } else if($(this).prop("checked") == false && $("#closure" + poolname).is(":checked")){
+                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
+                        $('#employeeInput' + poolname).addClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                        
+                    } else if($(this).prop("checked") == true && $("#closure" + poolname).is(":checked")){
+                        $('#employeeInput' + poolname).addClass("bothChecked")
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                    } else{
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    }
+                }
+    
+            // if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
+            //     $('#employeeInput' + poolname).removeAttr("disabled")
+            // } else {
+            //     $('#employeeInput' + poolname).attr("disabled", "disabled")
+            // }
+        });
+    })()
+
+    $('.emplnumwatertest').on('keyup', function(e) {
+        var enterednum = $(this).val();
+        var clicked = $(this);
+        
+        var poolName = clicked.attr("id").slice(13)
+        if(e.keyCode == 13 && clicked.hasClass("disable") && !(clicked.hasClass("inputsFilled"))){
+            alert('You need to check off both the closure and DM notified Tabs')
+        } else if(e.keyCode == 13 && !(clicked.hasClass("disable")) && !(clicked.hasClass("inputsFilled")) && !(clicked.hasClass("bothChecked"))){
+            alert('You need to fill in the inputs first')
+        } else if(e.keyCode == 13 && clicked.val() !== "" && (clicked.hasClass("bothChecked") || clicked.hasClass("inputsFilled"))) {
+            console.log("we here")
             $.ajax({
                 url: '/employees/',
                 type: 'GET',
@@ -463,9 +684,6 @@ if($("#ModalLongTitle").length){
             $("#deleteButton").addClass("hidden")
         })
     });
-}
-if(document.querySelector(".dateFrom") != null){
-    console.log(document.cookie)
 }
 
 // add to Url

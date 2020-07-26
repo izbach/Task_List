@@ -1,0 +1,31 @@
+<% include ./partials/adminheader %>
+<div class="container">
+    <div class="input-group">
+        <form action="/admin/headcount-index" method="GET">
+            <h4>From: <input type="date" class="dateFrom" name="dateFrom" value="<%= defaultYear %>-<%= defaultMonth %>-<%= defaultDay %>"> To: <input type="date" class="dateTo" name="dateTo" value="<%= yearTo %>-<%= monthTo %>-<%= dayTo %>"> <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button></h4>
+        </form>
+    </div>
+    <table class="table table-bordered table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Day</th>
+            <th>Pool</th>
+            <th>Time</th>
+            <th>Count</th>
+            <th>Employee</th>
+        </tr>
+        <% headcounts.forEach(headcount => { %>
+            <% date = headcount.date.toString() %>
+            <tr>
+                <td><%= date.slice(4, 15) %></td>
+                <td><%= headcount.day %></td>
+                <td><%= headcount.pool %></td>
+                <td><%= headcount.time %></td>
+                <td><%= headcount.headcount %></td>
+                <td><%= headcount.full_name %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+<% include ./partials/adminfooter %>

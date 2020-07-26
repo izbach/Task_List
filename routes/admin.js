@@ -1,11 +1,12 @@
 var express = require("express");
 var router = express.Router();
 var db = require("./admin");
-var pool = require("../dbsetup")
-var async = require("async")
-var cron = require("node-cron")
-var cookieParser = require('cookie-parser')
-var session = require("express-session")
+var pool = require("../dbsetup");
+var nodeExcel = require('excel-export');
+var async = require("async");
+var cron = require("node-cron");
+var cookieParser = require('cookie-parser');
+var session = require("express-session");
 
 
 function isLoggedIn(req, res, next){
@@ -151,7 +152,8 @@ router.use(isLoggedIn, function(req, res, next){
 })
 
 router.get("/admin/tasks", (req, res) => {
-    pool.query('SELECT * FROM tasks_list', (err, results) => {
+    console.log(req.user.branch)
+    pool.query('SELECT * FROM '+ req.user.branch+'.tasks_list', (err, results) => {
         if(err){
             throw err
         }
@@ -163,7 +165,7 @@ router.put('/admin/tasks/:id',(request, response) => {
     const id = parseInt(request.params.id)
     const { task_name, task_desc } = request.body
     pool.query(
-        'UPDATE tasks_list SET task_name = $1, task_desc = $2 WHERE id = $3',
+        'UPDATE '+ request.user.branch+'.tasks_list SET task_name = $1, task_desc = $2 WHERE id = $3',
         [task_name, task_desc, id],
         (error, results) => {
         if (error) {
@@ -176,10 +178,11 @@ router.put('/admin/tasks/:id',(request, response) => {
 router.get("/admin", (req, res) =>{
     res.redirect("/admin/tasks")
 })
+
 router.delete('/admin/tasks/:id',(request, response) => {
     const id = parseInt(request.params.id)
 
-    pool.query('DELETE FROM tasks_list WHERE id = $1', [id], (error, results) => {
+    pool.query('DELETE FROM '+ request.user.branch+'.tasks_list WHERE id = $1', [id], (error, results) => {
         if (error) {
         throw error
         }
@@ -187,9 +190,9 @@ router.delete('/admin/tasks/:id',(request, response) => {
     })
 })
 router.post('/admin/tasks', (request, response) => {
-    const { task_name, task_time, task_desc, branch } = request.body
-
-    pool.query('INSERT INTO tasks_list (task_name, task_time, task_desc, branch) VALUES ($1, $2, $3, $4)', [task_name, task_time, task_desc, branch], (error, results) => {
+    const { task_name, task_time, task_desc } = request.body
+    
+    pool.query('INSERT INTO '+ request.user.branch+'.tasks_list (task_name, task_time, task_desc) VALUES ($1, $2, $3)', [task_name, task_time, task_desc], (error, results) => {
         if (error) {
         throw error
         }
@@ -198,8 +201,9 @@ router.post('/admin/tasks', (request, response) => {
 })
 router.get("/admin/tasks-complete-index", DefaultDateSetup,(req, res) =>{
     console.log(res.locals.dateLookup)
+    
     pool.query("INSERT INTO tasks_longterm SELECT * FROM tasks");
-    pool.query("SELECT date, task_weekday, task_name, full_name, branch FROM tasks_longterm JOIN employees ON tasks_longterm.employee_id = employees.employee_id JOIN tasks_list ON tasks_longterm.task_id = tasks_list.id " + res.locals.dateLookup + " ORDER BY date DESC;", function(err, results){
+    pool.query("SELECT date, task_weekday, task_name, full_name, employees.branch FROM tasks_longterm JOIN employees ON tasks_longterm.employee_id = employees.employee_id JOIN "+ req.user.branch+".tasks_list ON tasks_longterm.task_id = "+ req.user.branch+".tasks_list.id " + res.locals.dateLookup + " ORDER BY date DESC;", function(err, results){
         if(err){
             throw err
         }
@@ -214,6 +218,25 @@ router.get("/admin/watertest-index", DefaultDateSetup,(req, res) =>{
         res.render("waterTestIndex", {waterTests: results.rows, DateFrom: req.query.dateFrom})
     })
 })
+router.get("/admin/headcount-index", DefaultDateSetup,(req, res) =>{
+    pool.query("SELECT date, day, time, pool, headcount, full_name FROM ecy.headcounts JOIN employees ON ecy.headcounts.employee_id = employees.employee_id " + res.locals.dateLookup + " ORDER BY date DESC, time DESC;", function(err, results){
+        if(err){
+            throw err
+        }
+        res.render("headcountIndex", {headcounts: results.rows, DateFrom: req.query.dateFrom})
+    })
+})
+router.get("/admin/walkthrough-index", DefaultDateSetup,(req, res) =>{
+    pool.query("SELECT date, day, time, changeroom, steamroom, full_name FROM ecy.walkthroughs JOIN employees ON ecy.walkthroughs.employee_id = employees.employee_id " + res.locals.dateLookup + " ORDER BY date DESC, time DESC;", function(err, results){
+        if(err){
+            throw err
+        }
+        res.render("walkthroughIndex", {walkthroughs: results.rows, DateFrom: req.query.dateFrom})
+    })
+})
+router.get("/admin/facility-settings", (req, res) => {
+    res.render("facilitySettings")
+})
 router.get("/admin/employees", (req, res) => {
     
     pool.query("INSERT INTO tasks_longterm SELECT * FROM tasks");
@@ -226,20 +249,74 @@ router.get("/admin/employees", (req, res) => {
 })
 router.get("/admin/employee-counts", DefaultDateSetup, (req, res) => {
     pool.query("INSERT INTO tasks_longterm SELECT * FROM tasks");
-    console.log(res.locals.dateLookup)
-    pool.query("WITH t AS(SELECT full_name, COUNT(tasks_longterm.employee_id) AS tasks FROM tasks_longterm RIGHT JOIN employees ON tasks_longterm.employee_id = employees.employee_id GROUP BY full_name), w AS(SELECT full_name, COUNT(ecy.watertests.employee_id) AS watertests FROM ecy.watertests RIGHT JOIN employees ON ecy.watertests.employee_id = employees.employee_id GROUP BY full_name) SELECT t.full_name, tasks, watertests FROM t JOIN w ON t.full_name = w.full_name;", function(err, results){
+    // WE CAN MAKE THIS ONE TABLE BY GETTING THE EMPLOYEE LIST FIRST!!!
+
+    pool.query("WITH t AS(SELECT full_name, COUNT(tasks_longterm.employee_id) AS tasks FROM tasks_longterm RIGHT JOIN employees ON tasks_longterm.employee_id = employees.employee_id "+ res.locals.dateLookup +" GROUP BY full_name), h AS(SELECT full_name, COUNT(ecy.headcounts.employee_id) AS headcounts FROM ecy.headcounts RIGHT JOIN employees ON ecy.headcounts.employee_id = employees.employee_id "+ res.locals.dateLookup +" GROUP BY full_name), wt AS(SELECT full_name, COUNT(ecy.walkthroughs.employee_id) AS walkthroughs FROM ecy.walkthroughs RIGHT JOIN employees ON ecy.walkthroughs.employee_id = employees.employee_id "+ res.locals.dateLookup +" GROUP BY full_name), w AS(SELECT full_name, COUNT(ecy.watertests.employee_id) AS watertests FROM ecy.watertests RIGHT JOIN employees ON ecy.watertests.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name) SELECT employees.full_name, tasks, watertests, headcounts, walkthroughs FROM employees FULL JOIN w ON employees.full_name = w.full_name FULL JOIN t ON employees.full_name = t.full_name FULL JOIN wt ON employees.full_name = wt.full_name FULL JOIN h ON employees.full_name = h.full_name;", function(err, results){
         if(err){
             throw err
         }
-        res.render("employeeCounts", {allCounts: results.rows, DateFrom: req.query.dateFrom})
+        res.render("employeeCountsAll", {allCounts: results.rows, DateFrom: req.query.dateFrom})
     })
-        
-    // pool.query(" SELECT full_name, COUNT(*) FROM tasks_longterm JOIN employees ON tasks_longterm.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY COUNT DESC;", function(err, results){
+    // async.series([
+    //     function(callback){
+    //         pool.query(" SELECT full_name, COUNT(*) AS tasks FROM tasks_longterm JOIN employees ON tasks_longterm.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY tasks DESC;", function(err, allTaskCounts){
+    //             if(err){
+    //                 throw err
+    //             }
+    //             console.log(allTaskCounts.rows)
+    //             taskCounts = allTaskCounts.rows
+    //             callback(null, allTaskCounts)
+    //         })
+    //     },
+    //     function(callback){
+    //         pool.query("SELECT full_name, COUNT(ecy.watertests.employee_id) AS watertests FROM ecy.watertests RIGHT JOIN employees ON ecy.watertests.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY watertests DESC;", function(err, allWaterTestCounts){
+    //             if(err){
+    //                 throw err
+    //             }
+    //             waterTestCounts = allWaterTestCounts.rows
+    //             callback(null, allWaterTestCounts)
+    //         })
+    //     },
+    //     function(callback){
+            
+    //         pool.query("SELECT full_name, COUNT(*) AS headcounts FROM ecy.headcounts RIGHT JOIN employees ON ecy.headcounts.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY headcounts DESC;", function(err, allHeadCounts){
+    //             if(err){
+    //                 throw err
+    //             }
+    //             headcounts = allHeadCounts.rows
+    //             callback(null, allHeadCounts)
+    //         })
+            
+    //     },
+    //     function(callback){
+    //         pool.query("SELECT full_name, COUNT(*) AS walkthroughs FROM ecy.walkthroughs RIGHT JOIN employees ON ecy.walkthroughs.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY walkthroughs DESC;", function(err, allWalkthroughs){
+    //             if(err){
+    //                 throw err
+    //             }
+    //             walkthroughs = allWalkthroughs.rows
+    //             callback(null, allWalkthroughs)
+    //         })
+    //     }
+    // ], 
+    // function(err){
+    //     if(err){
+    //         throw err
+    //     }
+    //     res.render("employeeCounts", {taskCounts: taskCounts, walkthroughs: walkthroughs, headcounts: headcounts, waterTestCounts: waterTestCounts, DateFrom: req.query.dateFrom})
+    // })       // pool.query(" SELECT full_name, COUNT(*) FROM tasks_longterm JOIN employees ON tasks_longterm.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name ORDER BY COUNT DESC;", function(err, results){
     //     if(err){
     //         throw err
     //     }
     //     res.render("employeeCounts", {results: results.rows, DateFrom: req.query.dateFrom})
     // })
+
+    // pool.query("SELECT full_name, COUNT(ecy.watertests.employee_id) AS watertests FROM ecy.watertests RIGHT JOIN employees ON ecy.watertests.employee_id = employees.employee_id "+ res.locals.dateLookup + " GROUP BY full_name", function(err, results){
+    //     if(err){
+    //         throw err
+    //     }
+    //     res.render("employeeCounts", {results: results.rows, DateFrom: req.query.dateFrom})
+    // })
+
 })
 router.get("/logout", function(req, res){
     req.logout();

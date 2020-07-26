@@ -105,3 +105,10 @@ input[type=number] {
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
   }
+
+.unfilled{
+	background-color: red;
+}
+.unfilled:focus{
+	background-color: white;
+}

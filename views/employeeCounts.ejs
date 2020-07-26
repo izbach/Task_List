@@ -5,20 +5,79 @@
             <h4>From: <input type="date" class="dateFrom" name="dateFrom" value="<%= defaultYear %>-<%= defaultMonth %>-<%= defaultDay %>"> To: <input type="date" class="dateTo" name="dateTo" value="<%= yearTo %>-<%= monthTo %>-<%= dayTo %>"> <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button></h4>
         </form>
     </div>
-    <table class="table table-bordered table-dark">
-        <tr>
-            <th>Employee</th>
-            <th>Tasks Done</th>
-            <th>Water Tests Done</th>
-        </tr>
-        <% allCounts.forEach(result => { %>
-            <tr>
-                <td><%= result.full_name %></td>
-                <td><%= result.tasks %></td>
-                <td><%= result.watertests %></td>
-            </tr>
-        <% }) %>
-    </table>
+    <div class="col-md-3">
+        <div class="row">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    <th>Employee</th>
+                    <th>Tasks Done</th>
+                </tr>
+                <% taskCounts.forEach(result => { %>
+                    <tr>
+                        <td><%= result.full_name %></td>
+                        <td><%= result.tasks %></td>
+                    </tr>
+                <% }) %>
+                
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    <th>Employee</th>
+                    <th>Water Tests Done</th>
+                </tr>
+                <% waterTestCounts.forEach(result => { %>
+                    <tr>
+                        <td><%= result.full_name %></td>
+                        <td><%= result.watertests %></td>
+                    </tr>
+                <% }) %>
+                
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    <th>Employee</th>
+                    <th>Headcounts Done</th>
+                </tr>
+                <% headcounts.forEach(result => { %>
+                    <tr>
+                        <td><%= result.full_name %></td>
+                        <td><%= result.headcounts %></td>
+                    </tr>
+                <% }) %>
+                
+            </table>
+        </div>
+
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <table class="table table-bordered table-dark">
+                <tr>
+                    <th>Employee</th>
+                    <th>Walkthroughs Done</th>
+                </tr>
+                <% walkthroughs.forEach(result => { %>
+                    <tr>
+                        <td><%= result.full_name %></td>
+                        <td><%= result.walkthroughs %></td>
+                    </tr>
+                <% }) %>
+                
+            </table>
+        </div>
+
+    </div>
+    
 </div>
 
 

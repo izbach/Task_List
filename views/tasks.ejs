@@ -16,7 +16,7 @@
 					<th>Description</th>
 				</tr>
                 <% tasks.forEach(task => { %>
-                <% if(task.task_time == 'opn' && task.branch == currentUser.branch){ %>
+                <% if(task.task_time == 'opn'){ %>
                     <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>">
                         <td><%= task.task_name %></td>
                         <td><%= task.task_desc %></td>
@@ -32,7 +32,7 @@
 					<th>Description</th>
                 </tr>
                 <% tasks.forEach(task => { %>
-                <% if(task.task_time == 'day' && task.branch == currentUser.branch){ %>
+                <% if(task.task_time == 'day' ){ %>
                     <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>" >
                         <td><%= task.task_name %></td>
                         <td><%= task.task_desc %></td>
@@ -52,7 +52,7 @@
                     <th>Description</th>
                 </tr >
                 <% tasks.forEach(task => { %>
-                <% if(task.task_time == 'cls' && task.branch == currentUser.branch){ %>
+                <% if(task.task_time == 'cls'){ %>
                     <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>" >
                         <td><%= task.task_name %></td>
                         <td><%= task.task_desc %></td>

@@ -24,6 +24,22 @@ const getTasksDone = (req, res) => {
         res.send(results.rows)
     })
 }
+const getWalkThroughsDone = (req, res) => {
+    pool.query('SELECT * FROM ecy.walkthroughs WHERE date = CURRENT_DATE', (err, results) => {
+        if(err){
+            throw err
+        }
+        res.send(results.rows)
+    })
+}
+const getHeadcountsDone = (req, res) => {
+    pool.query('SELECT * FROM ecy.headcounts WHERE date = CURRENT_DATE', (err, results) => {
+        if(err){
+            throw err
+        }
+        res.send(results.rows)
+    })
+}
 const getOpeningClosingTimes = (req, res) => {
     pool.query('SELECT * FROM ecy.openclosetimes', (err, results) => {
         if(err){
@@ -51,6 +67,26 @@ const createTask = (request, response) => {
             throw error
         }
         response.status(201).send(`task added with ID: ${results.insertId}`)
+    })
+}
+const createHeadCount = (request, response) => {
+    const { day, time, headcount_pool, headcount, employee_id } = request.body
+
+    pool.query('INSERT INTO ecy.headcounts (day, time, pool, headcount, employee_id) VALUES ($1, $2, $3, $4, $5)', [day, time, headcount_pool, headcount, employee_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(201).send(`task added with ID: ${results.insertId}`)
+    })
+}
+const createWalkthroughEntry = (request, response) => {
+    const { day, time, changeroom, steamroom, employee_id } = request.body
+
+    pool.query('INSERT INTO ecy.walkthroughs (day, time, changeroom, steamroom, employee_id) VALUES ($1, $2, $3, $4, $5)', [day, time, changeroom, steamroom, employee_id], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(201).send(`walkthrough added`)
     })
 }
 const createWaterTest = (request, response) => {
@@ -96,5 +132,9 @@ module.exports = {
     getEmployees,
     getTasksDone,
     getTaskById,
-    createWaterTest
+    createWaterTest,
+    createWalkthroughEntry,
+    getWalkThroughsDone,
+    createHeadCount,
+    getHeadcountsDone
   }
