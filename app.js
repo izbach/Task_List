@@ -2,6 +2,7 @@ var express = require("express"),
     app     = express(),
     mongoose = require("mongoose"),
     passport = require("passport"),
+    db = require("./admin"),
     bodyParser = require("body-parser");
 
 //=============================================================
@@ -19,7 +20,9 @@ app.get("/", function(req, res){
 app.get("/admin", (req, res) => {
     res.render("admin")
 })
+app.get('/tasks', db.getTasks)
+app.post('/tasks', db.createTask)
 
-app.listen("3000", function(){
+app.listen("3001", function(){
     console.log("server is running")
 })

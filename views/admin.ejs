@@ -1,27 +1,155 @@
-<% include ../partials/header %>
+<% include ./partials/header %>
 
 <div class="jumbotron"><h1>Admin</h1></div>
 <div class="container">
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading"><h3>Opening Tasks<span style="float:right"><button id="addOpening"><i class="fas fa-plus"></i></button></span></h3></div>
+            <div class="panel-heading"><h3>Opening Tasks<span style="float:right"><button class="addnew btn btn-primary" data-toggle="modal" data-target="#newOpening" id="addOpening"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="opening-tasks" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				
+			</table>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><h3>Daily Tasks<span style="float:right"><button id="addDaily"><i class="fas fa-plus"></i></button></span></h3></div>
+            <div class="panel-heading"><h3>Daily Tasks<span style="float:right"><button class="addnew btn btn-primary" data-toggle="modal" data-target="#newDaily" id="addDaily"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="daily-tasks" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				
+			</table>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><h3>Closing Tasks<span style="float:right"><button id="addClosing"><i class="fas fa-plus"></i></button></span></h3></div>
+            <div class="panel-heading"><h3>Closing Tasks<span style="float:right"><button class="addnew btn btn-primary" data-toggle="modal" data-target="#newClosing" id="addClosing"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="closing-tasks" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				
+			</table>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading"><h3>Water Tests<span style="float:right"><button id="addPool"><i class="fas fa-plus"></i></button></span></h3></div>
+            <div class="panel-heading"><h3>Water Tests<span style="float:right"><button class="btn btn-primary" id="addPool"><i class="fas fa-plus"></i></button></span></h3></div>
         </div>
         <div class="panel panel-default">
-            <div class="panel-heading"><h3>Shift Lead Tasks<span style="float:right"><button id="AddShiftLeadTask"><i class="fas fa-plus"></i></button></span></h3></div>
+            <div class="panel-heading"><h3>Shift Lead Tasks<span style="float:right"><button class="addnew btn btn-primary" id="AddShiftLeadTask" data-toggle="modal" data-target="#newShiftLead"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				
+			</table>
         </div>
     </div>
 
 </div>
 
-<% include ../partials/footer %>
+<div class="modal fade" id="newOpening" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Opening Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+                <div class="form-group">
+                    <label for="InputName">Task Name</label>
+                    <input type="text" class="form-control" id="InputNameOpen">
+                </div>
+                <div class="form-group">
+                    <label for="InputDesc">Description</label>
+                    <input type="text" class="form-control" id="InputDescOpen">
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" id="createOpening" class="btn btn-primary new-task">Add New Task</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newDaily" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Daily Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            ...
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Add New Task</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newClosing" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Closing Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            ...
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Add New Task</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newShiftLead" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Shift Lead Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            ...
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Add New Task</button>
+        </div>
+        </div>
+    </div>
+</div>
+<script>
+    // $.ajax({
+    //     url: 'tasks/',
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     success: (data) => {
+    //         data.forEach(task => {
+    //             if(task.task_time == 'opn'){
+    //                 console.log(task.task_time)
+    //                 $("#opening-tasks").append('<tr><td>'+ task.task_name + 
+    //                 '</td><td>' + task.task_desc + '</td></tr>')
+    //             }
+    //         });
+    //     }
+    // })
+
+</script>
+<% include ./partials/footer %>
