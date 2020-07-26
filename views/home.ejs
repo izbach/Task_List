@@ -1,0 +1,348 @@
+<% include ../partials/header %>
+<ul class="nav nav-tabs nav-justified">
+	<li role="presentation" class="active"><a href="#1" data-toggle="tab">Daily Tasks</a></li>
+	<li role="presentation" class=""><a href="#2" data-toggle="tab">Head Counts</a></li>
+	<li role="presentation" class=""><a href="#3" data-toggle="tab">Water Tests</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="1">
+			<div class="jumbotron">
+				<h1>Task Sheet</h1>
+				<h2 class="date"></h2>
+			</div>
+			<div class="container">
+			<div class="panel panel-default">
+			<div class="panel-heading"><h3>Opening Tasks</h3></div>
+			<table class="table table-bordered" style="width:100%">
+				<tr>
+					<th scope="col">Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><input type="number" name="fannyPack" id="fanny"></td>
+					<td>Check and restock fanny packs</td>
+					<td>Ensure fanny packs have 4 gloves, a mask and bandaids</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Remove Vacuum and clean bag</td>
+					<td>Wrap the vacuum cord up neatly and remove the bottom tray of the vacuum. The bag that was on the tray should now be rinsed with a hose</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Water Tests</td>
+					<td>Complete the opening water tests, if anything is wrong call DM immediatly</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Visually inspect bottom drain covers</td>
+					<td>Look for anything alarming such as cracks, damage or improper positioning of the drain covers on the bottom of the pool</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Cleaning Supplies</td>
+					<td>Check all cleaning supplies and if we don't have enough contact housekeeping for more</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Water Test Chemicals</td>
+					<td>Check if we have enough water test chemicals for the day and if we don't contact operations to get more</td>
+				</tr>
+			</table>
+
+			<ul class="list-group">
+				<li class="list-group-item">Opening Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Daily Tasks</h3></div>
+			<table class="table table-bordered" style="width:100%">
+				<tr>
+					<th>Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean Chrome Handles</td>
+					<td>Use chrome clean and scrubber to remove excess stains on chrome</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean chrome flagpoles</td>
+					<td>Use chrome clean and scrubber to remove excess stains on chrome</td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean windows and sills</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Tidy and sanitize office</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean and bleach deck drains</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean pool signs</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Tidy and organize storage rooms</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Clean microwave</td>
+					<td></td>
+				</tr><tr>
+					<td><input type="number" name=""></td>
+					<td>Clean sink</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Sweep office</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Spray down lifejackets</td>
+					<td></td>
+				</tr>
+			</table>
+
+			<ul class="list-group">
+				<li class="list-group-item">Daytime Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul>
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Closing Tasks</h3></div>
+			<table class="table table-bordered">
+				<tr>
+					<th>Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Ensure guard office is clean</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Lock change room doors</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Put clean bag in Dolphin and put dolphin in pool</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Lower the training pool and turn off lights</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Take towel bag to proper destination</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><input type="number" name=""></td>
+					<td>Charge radios</td>
+					<td></td>
+				</tr>
+			</table>
+			
+			<ul class="list-group">
+				<li class="list-group-item">Closing Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul>
+		</div>
+	</div>
+		</div>
+		<div class="tab-pane" id="2">
+			<div class="jumbotron">
+				<h1>Headcounts</h1>
+				<h2 id="time"></h2>
+			</div>
+			<div class="container">
+			<ul class="list-group">
+				<li class="list-group-item">Main Pool Open/Lane Swim: <input type="number" name="" id=""></li>
+				<li class="list-group-item">Main Pool Programs: <input type="number" name="" id=""></li>
+				<li class="list-group-item">Training Pool Open Swim: <input type="number" name="" id=""></li>
+				<li class="list-group-item">Training Pool Programs: <input type="number" name="" id=""></li>
+				<input class="btn btn-lg btn-primary" type="submit" name="" id="">
+			
+			</ul>
+		</div>
+		</div>
+  		<div class="tab-pane" id="3">
+			<div class="jumbotron">
+				<h1>Water tests</h1>
+				<h2 class="date"></h2>
+			</div>
+			<div class="container">
+			<div class="panel panel-default">
+			<div class="panel-heading"><h3>Main Pool</h3></div>
+			<table class="table table-bordered" style="width:100%">
+				<tr>
+					<th>Time</th>
+					<th>FAC</th>
+					<th>CAC</th>
+					<th>TC</th>
+					<th>PH</th>
+					<th>Temp</th>
+					<th>DM notified</th>
+					<th>Employee ID</th>
+				</tr>
+				<tr>
+					<td>Opening</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+				<tr>
+					<td>8:00am</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+				<tr>
+					<td>11:00am</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+				<tr>
+					<td>2:00pm</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+				<tr>
+					<td>5:00pm</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+				<tr>
+					<td>8:00pm</td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="number"></td>
+					<td><input type="checkbox"></td>
+					<td><input type="number"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="panel panel-default">
+				<div class="panel-heading"><h3>Training Pool</h3></div>
+				<table class="table table-bordered" style="width:100%">
+					<tr>
+						<th>Time</th>
+						<th>FAC</th>
+						<th>CAC</th>
+						<th>TC</th>
+						<th>PH</th>
+						<th>Temp</th>
+						<th>DM notified</th>
+						<th>Employee ID</th>
+					</tr>
+					<tr>
+						<td>Opening</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+					<tr>
+						<td>8:00am</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+					<tr>
+						<td>11:00am</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+					<tr>
+						<td>2:00pm</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+					<tr>
+						<td>5:00pm</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+					<tr>
+						<td>8:00pm</td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="number"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="number"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		</div>
+	  </div>
+
+<% include ../partials/footer %>
