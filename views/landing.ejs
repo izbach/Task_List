@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task table</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" type="text/css" href="/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/table.css">
+    <link rel="stylesheet" href="/landing.css">
+	<script type="text/javascript" src="/jquery.min.js"></script>
+	<script src="https://kit.fontawesome.com/cdd7c56204.js" crossorigin="anonymous"></script>
+</head> 
+<body>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" id="brand" href="#"><img style="width: 30px" src="/pics/Logo_YMCA.png" alt=""></a>
+        </div>
+    
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        
+        <ul class="nav navbar-nav navbar-right">
+            <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Admin</button>
+        </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <!-- <a href="/stats/CFY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image cfyimage"></div>
+                    <div class="caption">
+                        <h4>Melcor Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a> -->
+        <a href="/stats/ECY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image ecyimage"></div>
+                    <div class="caption">
+                        <h4>Eau Claire Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <!-- <a href="/stats/ROY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image royimage"></div>
+                    <div class="caption">
+                        <h4>Rocky Ridge Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="/stats/SHY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image shyimage"></div>
+                    <div class="caption">
+                        <h4>Shawnessy Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="/stats/RY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image ryimage"></div>
+                    <div class="caption">
+                        <h4>Remington Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="/stats/BY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image byimage"></div>
+                    <div class="caption">
+                        <h4>Brookfield Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="/stats/TY">
+            <div class="col-md-3 col-sm-4">
+                <div class="thumbnail">
+                    <div class="image tyimage"></div>
+                    <div class="caption">
+                        <h4>Saddletowne Task Sheets</h4>
+                    </div>
+                </div>
+            </div>
+        </a> -->
+    </div>
+
+<div id="id01" class="modalpersonal">
+  
+  <form class="modal-content-personal animate" action="/login" method="POST">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+    </div>
+
+    <div class="container-personal">
+      <label for="uname"><b>Username</b></label>
+      <input type="text" placeholder="Enter Username" name="username" value="Eau Claire" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" value="ecyswimming1" required>
+        
+      <button type="submit">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="container-personal" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+      <!-- <span class="psw">Forgot <a href="#">password?</a></span> -->
+    </div>
+  </form>
+</div>
+
+</div>
+
+<script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+        
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        </script>
+<% include ./partials/footer %>

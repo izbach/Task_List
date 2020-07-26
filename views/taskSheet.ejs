@@ -1,0 +1,203 @@
+<% include ./partials/header %>
+<ul class="nav nav-tabs nav-justified">
+	<li role="presentation" class="active"><a href="#taskSheet" data-toggle="tab">Daily Tasks</a></li>
+	<!-- <li role="presentation" class=""><a href="#shiftLeadTasks" data-toggle="tab">Shift Lead Tasks</a></li> -->
+	<li role="presentation" class=""><a href="#headCounts" data-toggle="tab">Head Counts and Walkthroughs</a></li>
+	<li role="presentation" class=""><a href="#waterTests" data-toggle="tab">Water Tests</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active" id="taskSheet">
+			<div class="jumbotron">
+				<h1>Task Sheet</h1>
+				<h2 class="date"></h2>
+			</div>
+			<div class="container">
+			<div class="panel panel-default">
+			<div class="panel-heading"><h3>Opening Tasks</h3></div>
+			<table class="table table-bordered tasks" id="opening-tasks" style="width:100%">
+				<tr>
+					<th id="empl">Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+					
+				</tr>
+				<% tasks.forEach(task => { %>
+					<% if(task.task_time == 'opn' && task.branch == branch){ %>
+						<tr>
+							<td><input type="number" class="emplnuminp" id=<%= task.id %> </td>
+							<td><%= task.task_name %></td>
+							<td><%= task.task_desc %></td>
+						</tr>
+					<% }}) %>
+			</table>
+
+			<!-- <ul class="list-group">
+				<li class="list-group-item">Opening Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul> -->
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Daily Tasks</h3></div>
+			<table class="table table-bordered tasks" id="daily-tasks" style="width:100%">
+				<tr>
+					<th>Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				<% tasks.forEach(task => { %>
+					<% if(task.task_time == 'day' && task.branch == branch){ %>
+						<tr>
+							<td><input type="number" class="emplnuminp" id=<%= task.id %> </td>
+							<td><%= task.task_name %></td>
+							<td><%= task.task_desc %></td>
+						</tr>
+					<% }}) %>
+			</table>
+
+			<!-- <ul class="list-group">
+				<li class="list-group-item">Daytime Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul> -->
+		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading"><h3>Closing Tasks</h3></div>
+			<table class="table table-bordered tasks" id="closing-tasks">
+				<tr>
+					<th>Employee #</th>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				<% tasks.forEach(task => { %>
+					<% if(task.task_time == 'cls' && task.branch == branch){ %>
+						<tr>
+							<td><input type="number" class="emplnuminp" id=<%= task.id %> </td>
+							<td><%= task.task_name %></td>
+							<td><%= task.task_desc %></td>
+						</tr>
+					<% }}) %>
+			</table>
+			
+			<!-- <ul class="list-group">
+				<li class="list-group-item">Closing Shift Lead: <input type="number" name="openSL" placeholder="Employee #"></li>
+			</ul> -->
+		</div>
+	</div>
+		</div>
+		<div class="tab-pane" id="headCounts">
+			<div class="jumbotron">
+				<h1>Headcounts and Walkthroughs</h1>
+				<!-- <h2 class="time" id="time"></h2> -->
+			</div>
+			<div class="container">
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3>Headcounts for <span class="time"></span></h3></div>
+					<table class="table table-bordered">
+						<tr>
+							<th>Pool</th>
+							<th># of people</th>
+						</tr>
+						<tr>
+							<td>Main pool open/lane swim</td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Main pool Programs</td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Training pool open swim</td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Training pool programs</td>
+							<td><input type="number"></td>
+						</tr>
+					</table>
+					<div class="panel-footer">
+						<h5>Employee number: <input type="number" name="" id=""><button style="float: right;" class="btn btn-success">Submit</button></h5>
+					</div>
+				</div>
+				<div class="panel panel-default">
+					<div class="panel-heading"><h3>Walkthroughs and Steamroom checks for <span class="hourly"></span></h3></div>
+					<table class="table table-bordered">
+						<tr>
+							<th>Changroom</th>
+							<th>Steamroom</th>
+							<th>Employee #</th>
+						</tr>
+						<tr>
+							<td>Mens general</td>
+							<td><input type="number" placeholder="temp"></td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Mens plus</td>
+							<td><input type="number" placeholder="temp"></td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Womens general</td>
+							<td><input type="number" placeholder="temp"></td>
+							<td><input type="number"></td>
+						</tr>
+						<tr>
+							<td>Womens plus</td>
+							<td><input type="number" placeholder="temp"></td>
+							<td><input type="number"></td>
+						</tr>
+					</table>
+		
+				</div>
+		</div>
+		</div>
+  		<div class="tab-pane" id="waterTests">
+			<div class="jumbotron">
+				<h1>Water tests</h1>
+				<h2 class="date"></h2>
+			</div>
+			<div class="container">
+			<div class="panel panel-default">
+			<div class="panel-heading"><h3 id="waterTestDisplay"></h3></div>
+			<table class="table table-bordered" style="width:100%">
+				<tr class="waterTestRows">
+					<th>Pool</th>
+					<th>FAC</th>
+					<th>CC</th>
+					<th>TC</th>
+					<th>PH</th>
+					<th>Temp</th>
+					<th>Closure</th>
+					<th>DM notified</th>
+					<th>Employee ID</th>
+				</tr>
+				<% pools.forEach(pool => { %>
+					<% pool_name = pool.name.replace(/\s+/g, ''); %>
+					<tr class="waterTestRows">
+						<td id="<%= pool.name %>"><%= pool.name %></td>
+						<td><input id="fac<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+						<td><input id="cc<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+						<td><input id="tc<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+						<td><input id="ph<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+						<td><input id="temp<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+						<td>
+							<label class="switch">
+								<input class="<%= pool_name %>inputslide" id="closure<%= pool_name %>" type="checkbox">
+								<span class="slider"></span>
+							</label>
+						</td>
+						<td>
+							<label class="switch">
+								<input class="<%= pool_name %>inputslide" id="dmNotified<%= pool_name %>" type="checkbox">
+								<span class="slider dmSlider" id="dmSlider<%= pool_name %>"></span>
+							</label>
+						</td>
+						<!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
+						<!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
+						<td><input class="emplnumwatertest" id="employeeInput<%= pool_name %>" disabled="disabled" type="number"></td>
+					</tr>
+				<% }) %>
+			</table>
+		</div>
+		</div>
+		</div>
+	  </div>
+	
+<% include ./partials/footer %>

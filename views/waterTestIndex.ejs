@@ -1,0 +1,45 @@
+<% include ./partials/adminheader %>
+<div class="container">
+    <div class="input-group">
+        <form action="/admin/watertest-index" method="GET">
+            <h4>From: <input type="date" class="dateFrom" name="dateFrom" value="<%= defaultYear %>-<%= defaultMonth %>-<%= defaultDay %>"> To: <input type="date" class="dateTo" name="dateTo" value="<%= yearTo %>-<%= monthTo %>-<%= dayTo %>"> <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button></h4>
+        </form>
+    </div>
+    <table class="table table-bordered table-dark">
+        <tr>
+            <th>date</th>
+            <th>day</th>
+            <th>pool</th>
+            <th>Employee</th>
+            <th>FAC</th>
+            <th>CC</th>
+            <th>TC</th>
+            <th>PH</th>
+            <th>Temp</th>
+            <th>Dm Notified</th>
+            <th>Closure</th>
+        </tr>
+        <% waterTests.forEach(test => { %>
+            <% date = test.date.toString() %>
+            <tr>
+                <td><%= date.slice(4, 15) %></td>
+                <td><%= test.watertestday %></td>
+                <td><%= test.pool %></td>
+                <td><%= test.full_name %></td>
+                <td><%= test.fac %></td>
+                <td><%= test.cc %></td>
+                <td><%= test.tc %></td>
+                <td><%= test.ph %></td>
+                <td><%= test.temp %></td>
+                <td><%= test.dmnotified %></td>
+                <td><%= test.closure %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+<% include ./partials/adminfooter %>
+
+<!-- 4537037905541047
+08/20
+065 -->

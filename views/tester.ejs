@@ -1,0 +1,215 @@
+<% include ./partials/header %>
+
+<table class="table table-bordered" style="width:100%">
+    <tr class="waterTestRows">
+        <th>Pool</th>
+        <th>FAC</th>
+        <th>CC</th>
+        <th>TC</th>
+        <th>PH</th>
+        <th>Temp</th>
+        <th>Closure</th>
+        <th>DM notified</th>
+        <th>Employee ID</th>
+    </tr>
+    <% pools.forEach(pool => { %>
+        <% pool_name = pool.name.replace(/\s+/g, ''); %>
+        <tr class="waterTestRows">
+            <td id="<%= pool.name %>"><%= pool.name %></td>
+            <td><input id="fac<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+            <td><input id="cc<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+            <td><input id="tc<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+            <td><input id="ph<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+            <td><input id="temp<%= pool_name %>" class="<%= pool_name %>inputboxes" type="number"></td>
+            <td>
+                <label class="switch">
+                    <input class="<%= pool_name %>inputslide" id="closure<%= pool_name %>" type="checkbox">
+                    <span class="slider"></span>
+                </label>
+            </td>
+            <td>
+                <label class="switch">
+                    <input class="<%= pool_name %>inputslide" id="dmNotified<%= pool_name %>" type="checkbox">
+                    <span class="slider dmSlider" id="dmSlider<%= pool_name %>"></span>
+                </label>
+            </td>
+            <!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
+            <!-- <td>Y: <input name="DMnotified" type="Radio"> N: <input name="DMnotified"type="radio"></td> -->
+            <td><input class="emplnumwatertest" id="employeeInput<%= pool_name %>" disabled="disabled" type="number"></td>
+        </tr>
+        <% }) %>
+</table>
+<button onclick="resetWaterTests();">Reset Water Tests</button>
+<script>
+(function() {
+        $('.waterTestRows input[type="number"').keyup(function() {
+            var empty = false
+            var poolname = $(this).attr("class").slice(0,-10)
+            var poolclass = $(this).attr("class")
+            $("." + poolclass).each(function() {
+                if ($(this).val() == '') {
+                    console.log(this.id + " is Empty")
+                    empty = true;
+                }
+            });
+    
+    
+            if (empty) {
+                $('#employeeInput' + poolname).removeClass("inputsFilled") // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+            } else {
+                $('#employeeInput' + poolname).addClass("inputsFilled"); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+            }
+            if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
+                $('#employeeInput' + poolname).removeAttr("disabled")
+            } else {
+                $('#employeeInput' + poolname).attr("disabled", "disabled")
+            }
+        });
+        $('.waterTestRows input[type="checkbox"]').click(function() {
+            var poolname = $(this).attr("class").slice(0,-10)
+            var poolclass = $(this).attr("class")
+            // $("." + poolclass).each(function() {
+            //     if($(this).prop("checked") == true){
+                    
+            //     }
+            //     else if($(this).prop("checked") == false){
+            //         alert("Checkbox is unchecked.");
+            //     }
+                if(this.id == ("closure" + poolname)){
+                    if($(this).is(":checked") && $("#dmNotified" + poolname).prop("checked") == false){
+                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
+                        $('#employeeInput' + poolname).addClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                        // alert("clicked")
+                        } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == false) {
+                            $("#dmSlider" + poolname).removeAttr("style")
+                            $('#employeeInput' + poolname).removeClass("disable")
+                            $('#employeeInput' + poolname).removeClass("bothChecked")
+                        } else if($(this).prop("checked") == false && $("#dmNotified" + poolname).prop("checked") == true) {
+                            $("#dmSlider" + poolname).removeAttr("style")
+                            $('#employeeInput' + poolname).removeClass("disable")
+                            $('#employeeInput' + poolname).removeClass("bothChecked")
+                        } else {
+                            $("#dmSlider" + poolname).removeAttr("style")
+                            $('#employeeInput' + poolname).removeClass("disable")
+                            $('#employeeInput' + poolname).addClass("bothChecked")
+                        }
+                }
+                if(this.id == ("dmNotified" + poolname)){
+                    if($(this).is(":checked") && $("#closure" + poolname).prop("checked") == false){
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    // alert("clicked")
+                    } else if($(this).prop("checked") == false && $("#closure" + poolname).is(":checked")){
+                        $("#dmSlider" + poolname).attr("style", "background-color: rgb(236, 41, 41)")
+                        $('#employeeInput' + poolname).addClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                        
+                    } else if($(this).prop("checked") == true && $("#closure" + poolname).is(":checked")){
+                        $('#employeeInput' + poolname).addClass("bothChecked")
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                    } else{
+                        $("#dmSlider" + poolname).removeAttr("style")
+                        $('#employeeInput' + poolname).removeClass("disable")
+                        $('#employeeInput' + poolname).removeClass("bothChecked")
+                    }
+                }
+    
+            if(($('#employeeInput' + poolname).hasClass("inputsFilled") && $('#employeeInput' + poolname).hasClass("disable") == false) || $('#employeeInput' + poolname).hasClass("bothChecked")){
+                $('#employeeInput' + poolname).removeAttr("disabled")
+            } else {
+                $('#employeeInput' + poolname).attr("disabled", "disabled")
+            }
+    
+            // if (empty) {
+            //     $('#employeeInput' + poolname).attr('disabled', 'disabled'); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+            // } else {
+            //     $('#employeeInput' + poolname).removeAttr('disabled'); // updated according to http://stackoverflow.com/questions/7637790/how-to-remove-disabled-attribute-with-jquery-ie
+            // }
+        });
+    })()
+$('.emplnumwatertest').on('keyup', function(e) {
+        var enterednum = $(this).val();
+        var clicked = $(this);
+        var poolName = clicked.attr("id").slice(13)
+        //alert(e.keyCode);
+        if(e.keyCode == 13) {
+            // if (clicked.hasClass("good") == true){
+            //     return
+            // }
+            $.ajax({
+                url: '/employees/',
+                type: 'GET',
+                dataType: 'json',
+                error: function (xhr, status, errorThrown){
+                    console.log(errorThrown)
+                },
+                success: (data) => {
+                    data.every((employee, idx, arr) => {
+                        if(employee.employee_id != enterednum){
+                            if(idx === arr.length - 1){
+                                alert('invalid id')
+                            }
+                        return true
+                        } else {
+                            var time = new Date()
+                            if($(this).hasClass("inputsFilled")){
+                                data = {
+                                    watertestday: dayOfWeek,
+                                    watertesttime: time.getHours() + ":" + time.getMinutes() ,
+                                    employee_id: enterednum,
+                                    poolName: poolName,
+                                    fac: $("#fac" + poolName).val(),
+                                    cc: $("#cc" + poolName).val(),
+                                    tc: $("#tc" + poolName).val(),
+                                    ph: $("#ph" + poolName).val(),
+                                    temp: $("#temp" + poolName).val(),
+                                    closure: $("#closure" + poolName).prop("checked"),
+                                    dmnotified: $("#dmNotified" + poolName).prop("checked")
+                                }
+                            } else {
+                                data = {
+                                    watertestday: dayOfWeek,
+                                    watertesttime: time.getHours() + ":" + time.getMinutes() ,
+                                    employee_id: enterednum,
+                                    poolName: poolName,
+                                    closure: $("#closure" + poolName).prop("checked"),
+                                    dmnotified: $("#dmNotified" + poolName).prop("checked")
+                                } 
+                            }
+                            $.ajax({
+                                url: '/waterTests',
+                                type: 'POST',
+                                dataType:'text',
+                                data: data,
+                                error: function (xhr, status, errorThrown){
+                                    console.log(errorThrown)
+                                },
+                                success: function(data) {
+                                    console.log(data)
+                                    clicked.addClass("good");
+                                    //disable all inputs in a row
+                                    clicked.attr("disabled", true)
+                                    clicked.closest("tr").addClass("good");
+                                    clicked.closest("tr").children().children().addClass("good");
+                                }
+                                
+                            });
+                            return false;
+                        }
+                       
+                    })
+                    
+                }
+            })
+        }
+    })
+    function resetWaterTests(){
+        $(".waterTestRows input[type='number']").val("")
+        $(".waterTestRows input[type='checkbox']").prop("checked", false)
+        $(".waterTestRows span").removeAttr("style")
+    }
+</script>
+<% include ./partials/footer %>

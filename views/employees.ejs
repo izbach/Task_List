@@ -1,0 +1,18 @@
+<% include ./partials/adminheader %>
+<div class="container">
+    <table class="table table-bordered table-dark">
+        <tr>
+            <th>Employee</th>
+            <th>Employee ID</th>
+        </tr>
+        <% employees.forEach(employee => { %>
+            <tr>
+                <td><%= employee.full_name %></td>
+                <td><%= employee.employee_id %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+
+<% include ./partials/adminfooter %>

@@ -1,0 +1,28 @@
+<% include ./partials/adminheader %>
+<% console.log(yearTo) %>
+<div class="container">
+    <div class="input-group">
+        <form action="/admin/tasks-complete-index" method="GET">
+            <h4>From: <input type="date" class="dateFrom" name="dateFrom" value="<%= defaultYear %>-<%= defaultMonth %>-<%= defaultDay %>"> To: <input type="date" class="dateTo" name="dateTo" value="<%= yearTo %>-<%= monthTo %>-<%= dayTo %>"> <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button></h4>
+        </form>
+    </div>
+    <table class="table table-bordered table-dark">
+        <tr>
+            <th>date</th>
+            <th>day</th>
+            <th>task name</th>
+            <th>Employee</th>
+        </tr>
+        <% completedTasks.forEach(task => { %>
+            <% date = task.date.toString() %>
+            <tr>
+                <td><%= date.slice(4, 15) %></td>
+                <td><%= task.task_weekday %></td>
+                <td><%= task.task_name %></td>
+                <td><%= task.full_name %></td>
+            </tr>
+        <% }) %>
+    </table>
+</div>
+
+<% include ./partials/adminfooter %>

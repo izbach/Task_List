@@ -1,0 +1,170 @@
+<% include ./partials/adminheader %>
+
+<div class="jumbotron"><h1>Task Editor</h1></div>
+<div class="container">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>Opening Tasks<span style="float:right">
+                    <button class="addnew btn btn-primary" data-toggle="modal" data-target="#newOpeningTask" id="opn">
+                        <i class="fas fa-plus"></i></button></span>
+                </h3>
+                </div>
+            <table id="opening-tasks" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+                <% tasks.forEach(task => { %>
+                <% if(task.task_time == 'opn' && task.branch == currentUser.branch){ %>
+                    <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>">
+                        <td><%= task.task_name %></td>
+                        <td><%= task.task_desc %></td>
+                    </tr>
+                <% }}) %>
+			</table>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Daily Tasks<span style="float:right"><button class="addnew btn btn-primary" data-toggle="modal" data-target="#newOpeningTask" id="day"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="daily-tasks" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+                </tr>
+                <% tasks.forEach(task => { %>
+                <% if(task.task_time == 'day' && task.branch == currentUser.branch){ %>
+                    <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>" >
+                        <td><%= task.task_name %></td>
+                        <td><%= task.task_desc %></td>
+                    </tr>
+                <% }}) %>
+				
+			</table>
+        </div>
+        
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Closing Tasks<span style="float:right"><button class="addnew btn btn-primary" data-toggle="modal" data-target="#newOpeningTask" id="cls"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="closing-tasks" class="table table-bordered tasks" style="width:100%">
+                <tr>
+                    <th>Task</th>
+                    <th>Description</th>
+                </tr >
+                <% tasks.forEach(task => { %>
+                <% if(task.task_time == 'cls' && task.branch == currentUser.branch){ %>
+                    <tr class='clickable-row' data-toggle="modal" data-target="#newOpeningTask" id="<%= task.id %>" >
+                        <td><%= task.task_name %></td>
+                        <td><%= task.task_desc %></td>
+                    </tr>
+                <% }}) %>
+                
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><h3>Shift Lead Tasks<span style="float:right"><button class=" btn btn-primary" id="AddShiftLeadTask"><i class="fas fa-plus"></i></button></span></h3></div>
+            <table id="" class="table table-bordered tasks" style="width:100%">
+				<tr>
+					<th>Task</th>
+					<th>Description</th>
+				</tr>
+				
+			</table>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="newOpeningTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="ModalLongTitle">New Opening Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form id="myform" action="/admin/tasks" method="POST">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="InputName">Task Name</label>
+                    <input type="text" class="form-control" id="task_name" name="task_name">
+                </div>
+                <div class="form-group">
+                    <label for="InputDesc">Description</label>
+                    <input type="text" class="form-control" id="task_desc" name="task_desc">
+                </div>
+                <input type="hidden" id="task_time" name="task_time" value="opn">
+                <input type="hidden" id="task_time" name="branch" value="<%= currentUser.branch %>">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- <button type="" id="delete" class="btn btn-danger">Delete</button> -->
+                <label class="btn btn-danger" id="deleteButton" for="submitDelete">Delete</label>
+                <button type="submit" id="createOpening" class="btn btn-primary new-task">Add New Task</button>
+            </div>
+            </form>
+            <form id="delete" action="/tasks" class="hidden" method="POST"><button class="btn btn-danger" id="submitDelete" type="submit">Delete</button></form>
+        </div>
+    </div>
+</div>
+<!-- <div class="modal fade" id="newDailyTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Daily Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="/admin/tasks" method="POST">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="InputName">Task Name</label>
+                    <input type="text" class="form-control" name="task_name">
+                </div>
+                <div class="form-group">
+                    <label for="InputDesc">Description</label>
+                    <input type="text" class="form-control" name="task_desc">
+                </div>
+                <input style="display: none" type="text" name="task_time" value="day">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" id="createOpening" class="btn btn-primary new-task">Add New Task</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="newClosingTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="exampleModalLongTitle">New Closing Task</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <form action="/admin/tasks" method="POST">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="InputName">Task Name</label>
+                    <input type="text" class="form-control" name="task_name">
+                </div>
+                <div class="form-group">
+                    <label for="InputDesc">Description</label>
+                    <input type="text" class="form-control" name="task_desc">
+                </div>
+                <input style="display: none" type="text" name="task_time" value="cls">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" id="createOpening" class="btn btn-primary new-task">Add New Task</button>
+            </div>
+        </form>
+        </div>
+    </div>
+</div> -->
+<% include ./partials/adminfooter %>
